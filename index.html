@@ -3,115 +3,138 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Form Konversi Barang</title>
+<title>Laporan Konversi Barang</title>
 
 <style>
 body{
-  font-family: Arial, sans-serif;
-  background:#eaf2ff;
+  margin:0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:#fff;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
   padding:20px;
 }
-.container{
-  max-width:750px;
-  margin:auto;
-  background:#ffffff;
-  padding:25px;
-  border-radius:14px;
-  box-shadow:0 4px 14px rgba(0,0,0,0.12);
+
+.card{
+  background:rgba(255,255,255,0.08);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
 }
+
 h2{
   text-align:center;
   margin-bottom:20px;
 }
-label{
-  font-weight:bold;
-  display:block;
-  margin-top:12px;
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
 }
+
 input, textarea, button{
   width:100%;
   padding:10px;
-  margin-top:6px;
-  border-radius:8px;
-  border:1px solid #ccc;
+  border-radius:10px;
+  border:none;
+  outline:none;
   font-size:14px;
 }
+
+input, textarea{
+  background:#f1f5f9;
+}
+
 textarea{
   resize:vertical;
 }
+
 button{
-  background:#2563eb;
-  color:white;
-  font-size:16px;
-  border:none;
-  margin-top:18px;
+  background:linear-gradient(135deg,#38bdf8,#2563eb);
+  color:#fff;
+  font-weight:bold;
   cursor:pointer;
+  transition:.3s;
 }
+
 button:hover{
-  background:#1e40af;
+  transform:scale(1.03);
 }
+
 pre{
-  background:#f9fafb;
-  border:1px solid #ddd;
-  border-radius:10px;
-  padding:18px;
-  margin-top:25px;
   white-space:pre-wrap;
-  font-size:14px;
+  background:#020617;
+  padding:20px;
+  border-radius:14px;
+  margin-top:20px;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.footer{
+  text-align:center;
+  margin-top:15px;
+  font-size:12px;
+  opacity:.7;
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
-  <h2>Form Online Konversi Barang</h2>
+  <div class="card">
+    <h2>📦 Laporan Konversi Barang</h2>
 
-  <label>Tanggal Laporan</label>
-  <input type="date" id="tglLaporan">
+    <div class="grid">
+      <input id="tglLaporan" type="date">
+      <input id="barang" placeholder="Nama Barang">
+      <input id="stokAwal" type="number" placeholder="Stok Awal (Zak)">
+      <input id="jumlahKonversi" type="number" placeholder="Jumlah Dikonversi (Zak)">
+      <input id="hasil" placeholder="Hasil Konversi">
+      <input id="kemasan" placeholder="Penggunaan Kemasan">
+      <input id="pelaksana" placeholder="Pelaksana">
+      <input id="tglPelaksanaan" type="date">
+      <input id="checker" placeholder="Checker">
+    </div>
 
-  <label>Nama Barang</label>
-  <input type="text" id="barang" placeholder="MERDEKA 40KG SEMEN PCC">
+    <textarea id="keterangan" placeholder="Keterangan tambahan..." style="margin-top:12px"></textarea>
 
-  <label>Stok Awal</label>
-  <input type="text" id="stokAwal" placeholder="1 Zak">
+    <button onclick="buatLaporan()" style="margin-top:15px">
+      ✅ Buat Laporan
+    </button>
 
-  <label>Jumlah Dikonversi</label>
-  <input type="text" id="jumlahKonversi" placeholder="1 Zak">
+    <pre id="laporan"></pre>
 
-  <label>Hasil Konversi</label>
-  <input type="text" id="hasil" placeholder="40 Pack Semen Kemasan 1 kg">
-
-  <label>Penggunaan Kemasan</label>
-  <input type="text" id="kemasan" placeholder="40 pcs plastik kemasan size 2 kg">
-
-  <label>Pelaksana</label>
-  <input type="text" id="pelaksana" placeholder="Pak Endah">
-
-  <label>Tanggal Pelaksanaan</label>
-  <input type="date" id="tglPelaksanaan">
-
-  <label>Checker</label>
-  <input type="text" id="checker" placeholder="Indra">
-
-  <label>Keterangan</label>
-  <textarea id="keterangan" placeholder="Catatan tambahan..."></textarea>
-
-  <button onclick="buatLaporan()">Simpan Konversi & Buat Laporan</button>
-
-  <pre id="laporan"></pre>
+    <div class="footer">
+      Financial Freedom ID • Sistem Konversi Barang
+    </div>
+  </div>
 </div>
 
 <script>
-function formatTanggal(tgl){
-  if(!tgl) return "-";
-  const bulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
-  const d = new Date(tgl);
-  return d.getDate()+" "+bulan[d.getMonth()]+" "+d.getFullYear();
+function formatTanggal(t){
+  if(!t) return "-";
+  const b=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  const d=new Date(t);
+  return d.getDate()+" "+b[d.getMonth()]+" "+d.getFullYear();
 }
 
 function buatLaporan(){
-  const laporanText = `
+  const stokAwal = parseInt(stokAwalEl.value||0);
+  const dikonversi = parseInt(jumlahKonversi.value||0);
+  const stokAkhir = stokAwal - dikonversi;
+
+  if(stokAkhir < 0){
+    alert("❌ Stok akhir tidak boleh minus!");
+    return;
+  }
+
+  laporan.textContent = `
 MINIMARKET BANGUNAN PILAR
 Jl. Sunan Kudus, Gatak, Rukeman, Tamantirto, Bantul, D.I. Yogyakarta
 ════════════════════════════════════════════
@@ -122,13 +145,13 @@ Tanggal Laporan : ${formatTanggal(tglLaporan.value)}
 Jenis Transaksi : OUT (Konversi Barang)
 Nama Barang     : ${barang.value}
 
-Stok Awal            : ${stokAwal.value}
-Jumlah Dikonversi    : ${jumlahKonversi.value}
+Stok Awal            : ${stokAwal} Zak
+Jumlah Dikonversi    : ${dikonversi} Zak
 Hasil Konversi       : ${hasil.value}
-Stok Akhir           : 0 (Nol)
+Stok Akhir           : ${stokAkhir} Zak
 
 Penggunaan Kemasan :
-${kemasan.value} digunakan untuk proses konversi
+${kemasan.value}
 
 Pelaksana            : ${pelaksana.value}
 Tanggal Pelaksanaan  : ${formatTanggal(tglPelaksanaan.value)}
@@ -137,9 +160,9 @@ Checker              : ${checker.value}
 Keterangan :
 ${keterangan.value}
 `;
-
-  document.getElementById("laporan").textContent = laporanText;
 }
+
+const stokAwalEl = document.getElementById("stokAwal");
 </script>
 
 </body>
