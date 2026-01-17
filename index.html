@@ -8,33 +8,56 @@
 <style>
 body{
   font-family: Arial, sans-serif;
-  background:#f0f6ff;
+  background:#eaf2ff;
   padding:20px;
 }
 .container{
-  max-width:700px;
+  max-width:750px;
   margin:auto;
-  background:#fff;
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 4px 12px rgba(0,0,0,.1);
+  background:#ffffff;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.12);
 }
-label{font-weight:bold;margin-top:10px;display:block}
-input,textarea,button{
-  width:100%;padding:10px;margin-top:5px;
-  border-radius:8px;border:1px solid #ccc;
+h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+label{
+  font-weight:bold;
+  display:block;
+  margin-top:12px;
+}
+input, textarea, button{
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+textarea{
+  resize:vertical;
 }
 button{
-  background:#2563eb;color:#fff;
-  font-size:16px;border:none;margin-top:15px;
+  background:#2563eb;
+  color:white;
+  font-size:16px;
+  border:none;
+  margin-top:18px;
+  cursor:pointer;
+}
+button:hover{
+  background:#1e40af;
 }
 pre{
   background:#f9fafb;
-  padding:15px;
-  border-radius:10px;
-  white-space:pre-wrap;
-  margin-top:20px;
   border:1px solid #ddd;
+  border-radius:10px;
+  padding:18px;
+  margin-top:25px;
+  white-space:pre-wrap;
+  font-size:14px;
 }
 </style>
 </head>
@@ -42,58 +65,65 @@ pre{
 <body>
 
 <div class="container">
-<h2>Form Konversi Barang</h2>
+  <h2>Form Online Konversi Barang</h2>
 
-<label>Tanggal Laporan</label>
-<input type="date" id="tgl_laporan">
+  <label>Tanggal Laporan</label>
+  <input type="date" id="tglLaporan">
 
-<label>Nama Barang</label>
-<input type="text" id="barang" placeholder="MERDEKA 40KG SEMEN PCC">
+  <label>Nama Barang</label>
+  <input type="text" id="barang" placeholder="MERDEKA 40KG SEMEN PCC">
 
-<label>Stok Awal</label>
-<input type="text" id="stok_awal" placeholder="1 Zak">
+  <label>Stok Awal</label>
+  <input type="text" id="stokAwal" placeholder="1 Zak">
 
-<label>Jumlah Dikonversi</label>
-<input type="text" id="dik" placeholder="1 Zak">
+  <label>Jumlah Dikonversi</label>
+  <input type="text" id="jumlahKonversi" placeholder="1 Zak">
 
-<label>Hasil Konversi</label>
-<input type="text" id="hasil" placeholder="40 Pack Semen Kemasan 1 kg">
+  <label>Hasil Konversi</label>
+  <input type="text" id="hasil" placeholder="40 Pack Semen Kemasan 1 kg">
 
-<label>Penggunaan Kemasan</label>
-<input type="text" id="kemasan" placeholder="40 pcs plastik size 2 kg">
+  <label>Penggunaan Kemasan</label>
+  <input type="text" id="kemasan" placeholder="40 pcs plastik kemasan size 2 kg">
 
-<label>Pelaksana</label>
-<input type="text" id="pelaksana" placeholder="Pak Endah">
+  <label>Pelaksana</label>
+  <input type="text" id="pelaksana" placeholder="Pak Endah">
 
-<label>Tanggal Pelaksanaan</label>
-<input type="date" id="tgl_pelaksanaan">
+  <label>Tanggal Pelaksanaan</label>
+  <input type="date" id="tglPelaksanaan">
 
-<label>Checker</label>
-<input type="text" id="checker" placeholder="Indra">
+  <label>Checker</label>
+  <input type="text" id="checker" placeholder="Indra">
 
-<label>Keterangan</label>
-<textarea id="ket"></textarea>
+  <label>Keterangan</label>
+  <textarea id="keterangan" placeholder="Catatan tambahan..."></textarea>
 
-<button onclick="buatLaporan()">SIMPAN & BUAT LAPORAN</button>
+  <button onclick="buatLaporan()">Simpan Konversi & Buat Laporan</button>
 
-<pre id="laporan"></pre>
+  <pre id="laporan"></pre>
 </div>
 
 <script>
+function formatTanggal(tgl){
+  if(!tgl) return "-";
+  const bulan = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+  const d = new Date(tgl);
+  return d.getDate()+" "+bulan[d.getMonth()]+" "+d.getFullYear();
+}
+
 function buatLaporan(){
-  const laporan = `
+  const laporanText = `
 MINIMARKET BANGUNAN PILAR
 Jl. Sunan Kudus, Gatak, Rukeman, Tamantirto, Bantul, D.I. Yogyakarta
 ════════════════════════════════════════════
 
 LAPORAN KONVERSI BARANG
 
-Tanggal Laporan : ${tgl_laporan.value}
+Tanggal Laporan : ${formatTanggal(tglLaporan.value)}
 Jenis Transaksi : OUT (Konversi Barang)
 Nama Barang     : ${barang.value}
 
-Stok Awal            : ${stok_awal.value}
-Jumlah Dikonversi    : ${dik.value}
+Stok Awal            : ${stokAwal.value}
+Jumlah Dikonversi    : ${jumlahKonversi.value}
 Hasil Konversi       : ${hasil.value}
 Stok Akhir           : 0 (Nol)
 
@@ -101,14 +131,14 @@ Penggunaan Kemasan :
 ${kemasan.value} digunakan untuk proses konversi
 
 Pelaksana            : ${pelaksana.value}
-Tanggal Pelaksanaan  : ${tgl_pelaksanaan.value}
+Tanggal Pelaksanaan  : ${formatTanggal(tglPelaksanaan.value)}
 Checker              : ${checker.value}
 
 Keterangan :
-${ket.value}
+${keterangan.value}
 `;
 
-  document.getElementById("laporan").textContent = laporan;
+  document.getElementById("laporan").textContent = laporanText;
 }
 </script>
 
