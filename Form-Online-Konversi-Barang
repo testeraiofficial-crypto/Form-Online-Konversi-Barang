@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Konversi Barang</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg,#dbeafe,#eff6ff);
+  margin: 0;
+  padding: 20px;
+}
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+}
+input, textarea, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+button {
+  background: #2563eb;
+  color: white;
+  font-size: 16px;
+  margin-top: 15px;
+  border: none;
+}
+button:hover {
+  background: #1e40af;
+}
+ul {
+  padding-left: 20px;
+}
+li {
+  margin-bottom: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Form Konversi Barang</h2>
+
+  <label>Tanggal</label>
+  <input type="date" id="tanggal">
+
+  <label>Jenis</label>
+  <input type="text" value="OUT (KONVERSI)" disabled>
+
+  <label>Nama Barang</label>
+  <input type="text" id="barang" placeholder="Contoh: Pasir Ayak">
+
+  <label>Jumlah Awal</label>
+  <input type="text" id="awal" placeholder="Contoh: 0,5 Colt">
+
+  <label>Hasil Konversi</label>
+  <input type="text" id="hasil" placeholder="Contoh: 29 Zak">
+
+  <label>Keterangan</label>
+  <textarea id="ket" placeholder="Catatan tambahan..."></textarea>
+
+  <button onclick="simpan()">Simpan Konversi</button>
+
+  <hr>
+
+  <h3>Riwayat Konversi</h3>
+  <ul id="list"></ul>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("konversi")) || [];
+
+function simpan() {
+  const item = {
+    tanggal: tanggal.value,
+    barang: barang.value,
+    awal: awal.value,
+    hasil: hasil.value,
+    ket: ket.value
+  };
+  data.push(item);
+  localStorage.setItem("konversi", JSON.stringify(data));
+  tampil();
+}
+
+function tampil() {
+  list.innerHTML = "";
+  data.forEach((d, i) => {
+    list.innerHTML += `<li>
+      (OUT)(KONVERSI) ${d.awal} ${d.barang} → ${d.hasil} (${d.tanggal})
+    </li>`;
+  });
+}
+tampil();
+</script>
+
+</body>
+</html>
