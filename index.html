@@ -6,51 +6,35 @@
 <title>Form Konversi Barang</title>
 
 <style>
-body {
+body{
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#dbeafe,#eff6ff);
-  margin: 0;
-  padding: 20px;
+  background:#f0f6ff;
+  padding:20px;
 }
-.container {
-  max-width: 600px;
-  margin: auto;
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.container{
+  max-width:700px;
+  margin:auto;
+  background:#fff;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
 }
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
+label{font-weight:bold;margin-top:10px;display:block}
+input,textarea,button{
+  width:100%;padding:10px;margin-top:5px;
+  border-radius:8px;border:1px solid #ccc;
 }
-label {
-  font-weight: bold;
-  margin-top: 10px;
-  display: block;
+button{
+  background:#2563eb;color:#fff;
+  font-size:16px;border:none;margin-top:15px;
 }
-input, textarea, button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-button {
-  background: #2563eb;
-  color: white;
-  font-size: 16px;
-  margin-top: 15px;
-  border: none;
-}
-button:hover {
-  background: #1e40af;
-}
-ul {
-  padding-left: 20px;
-}
-li {
-  margin-bottom: 8px;
+pre{
+  background:#f9fafb;
+  padding:15px;
+  border-radius:10px;
+  white-space:pre-wrap;
+  margin-top:20px;
+  border:1px solid #ddd;
 }
 </style>
 </head>
@@ -58,59 +42,74 @@ li {
 <body>
 
 <div class="container">
-  <h2>Form Konversi Barang</h2>
+<h2>Form Konversi Barang</h2>
 
-  <label>Tanggal</label>
-  <input type="date" id="tanggal">
+<label>Tanggal Laporan</label>
+<input type="date" id="tgl_laporan">
 
-  <label>Jenis</label>
-  <input type="text" value="OUT (KONVERSI)" disabled>
+<label>Nama Barang</label>
+<input type="text" id="barang" placeholder="MERDEKA 40KG SEMEN PCC">
 
-  <label>Nama Barang</label>
-  <input type="text" id="barang" placeholder="Contoh: Pasir Ayak">
+<label>Stok Awal</label>
+<input type="text" id="stok_awal" placeholder="1 Zak">
 
-  <label>Jumlah Awal</label>
-  <input type="text" id="awal" placeholder="Contoh: 0,5 Colt">
+<label>Jumlah Dikonversi</label>
+<input type="text" id="dik" placeholder="1 Zak">
 
-  <label>Hasil Konversi</label>
-  <input type="text" id="hasil" placeholder="Contoh: 29 Zak">
+<label>Hasil Konversi</label>
+<input type="text" id="hasil" placeholder="40 Pack Semen Kemasan 1 kg">
 
-  <label>Keterangan</label>
-  <textarea id="ket" placeholder="Catatan tambahan..."></textarea>
+<label>Penggunaan Kemasan</label>
+<input type="text" id="kemasan" placeholder="40 pcs plastik size 2 kg">
 
-  <button onclick="simpan()">Simpan Konversi</button>
+<label>Pelaksana</label>
+<input type="text" id="pelaksana" placeholder="Pak Endah">
 
-  <hr>
+<label>Tanggal Pelaksanaan</label>
+<input type="date" id="tgl_pelaksanaan">
 
-  <h3>Riwayat Konversi</h3>
-  <ul id="list"></ul>
+<label>Checker</label>
+<input type="text" id="checker" placeholder="Indra">
+
+<label>Keterangan</label>
+<textarea id="ket"></textarea>
+
+<button onclick="buatLaporan()">SIMPAN & BUAT LAPORAN</button>
+
+<pre id="laporan"></pre>
 </div>
 
 <script>
-let data = JSON.parse(localStorage.getItem("konversi")) || [];
+function buatLaporan(){
+  const laporan = `
+MINIMARKET BANGUNAN PILAR
+Jl. Sunan Kudus, Gatak, Rukeman, Tamantirto, Bantul, D.I. Yogyakarta
+════════════════════════════════════════════
 
-function simpan() {
-  const item = {
-    tanggal: tanggal.value,
-    barang: barang.value,
-    awal: awal.value,
-    hasil: hasil.value,
-    ket: ket.value
-  };
-  data.push(item);
-  localStorage.setItem("konversi", JSON.stringify(data));
-  tampil();
-}
+LAPORAN KONVERSI BARANG
 
-function tampil() {
-  list.innerHTML = "";
-  data.forEach((d, i) => {
-    list.innerHTML += `<li>
-      (OUT)(KONVERSI) ${d.awal} ${d.barang} → ${d.hasil} (${d.tanggal})
-    </li>`;
-  });
+Tanggal Laporan : ${tgl_laporan.value}
+Jenis Transaksi : OUT (Konversi Barang)
+Nama Barang     : ${barang.value}
+
+Stok Awal            : ${stok_awal.value}
+Jumlah Dikonversi    : ${dik.value}
+Hasil Konversi       : ${hasil.value}
+Stok Akhir           : 0 (Nol)
+
+Penggunaan Kemasan :
+${kemasan.value} digunakan untuk proses konversi
+
+Pelaksana            : ${pelaksana.value}
+Tanggal Pelaksanaan  : ${tgl_pelaksanaan.value}
+Checker              : ${checker.value}
+
+Keterangan :
+${ket.value}
+`;
+
+  document.getElementById("laporan").textContent = laporan;
 }
-tampil();
 </script>
 
 </body>
